@@ -1525,42 +1525,6 @@ function toggleMusic() {
 }
 
 // ═══════════════════════════════════════════════
-// AUTO-PLAY FALLBACK
-// Fires after the grand opening clears (~6.2s).
-// • Attempts playWithFade() — works silently when browser policy allows it.
-// • If the browser still blocks audio (no prior interaction), the existing
-//   .catch() in playWithFade() handles it gracefully and the music button
-//   pulses three times to draw the user's attention.
-// • Once the user clicks / scrolls the existing listeners take over as usual.
-// ═══════════════════════════════════════════════
-(function () {
-  var AUTO_DELAY = 6200; // ms — just after stage fade-out (~5.4s)
-  setTimeout(function () {
-    if (!interactionTriggered) {
-      // Mark as triggered so the window click/scroll listeners don't fire again
-      interactionTriggered = true;
-      playWithFade();
-      // Give browser 500ms to resolve the play() promise;
-      // if audio is still blocked, animate the button as a visual nudge.
-      setTimeout(function () {
-        if (!isSongPlaying) {
-          // Reset interactionTriggered so the user's own click/scroll
-          // can still start music normally.
-          interactionTriggered = false;
-          var btn = document.getElementById('music-btn');
-          if (btn) {
-            btn.style.animation = 'musicNudge 1.2s ease-in-out 3';
-            btn.addEventListener('animationend', function () {
-              btn.style.animation = '';
-            }, { once: true });
-          }
-        }
-      }, 500);
-    }
-  }, AUTO_DELAY);
-})();
-
-// ═══════════════════════════════════════════════
 // GRAND CINEMATIC OPENING
 // ═══════════════════════════════════════════════
 (function(){
