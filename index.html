@@ -227,6 +227,33 @@ section{position:relative;z-index:1}
 .guestbook-form input:focus,.guestbook-form textarea:focus{border-color:var(--gold)}
 .guestbook-form textarea{height:80px;resize:none}
 
+/* WISH SUCCESS ANIMATION */
+.wish-toast{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.7);
+  background:var(--emerald);border:1px solid var(--gold);border-radius:8px;
+  padding:2rem 2.5rem;text-align:center;z-index:10000;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s,transform .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 40px rgba(201,168,76,.15);
+}
+.wish-toast.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1)}
+.wish-toast .toast-icon{font-size:2.5rem;display:block;margin-bottom:.6rem;animation:toastBounce .6s .1s cubic-bezier(.34,1.56,.64,1) both}
+.wish-toast .toast-msg{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--cream);font-style:italic;margin-bottom:.3rem}
+.wish-toast .toast-sub{font-size:.7rem;letter-spacing:.25em;color:var(--gold);text-transform:uppercase}
+@keyframes toastBounce{from{transform:scale(0) rotate(-10deg)}to{transform:scale(1) rotate(0deg)}}
+
+/* Sparkle burst around button */
+.sparkle-burst{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.sparkle{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0}
+.sparkle.go{animation:sparklePop .7s cubic-bezier(.25,.46,.45,.94) forwards}
+@keyframes sparklePop{
+  0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}
+}
+
+/* Button success state */
+.btn-gold.success{background:var(--emerald-light)!important;color:var(--gold-light)!important;transform:scale(.96)}
+
 
 /* FAB */
 #fab{position:fixed;bottom:2rem;right:2rem;z-index:100}
@@ -1308,7 +1335,12 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   <div class="guestbook-form">
     <input type="text" id="gb-name" placeholder="Your name">
     <textarea id="gb-msg" placeholder="Leave a warm wish for Tillo Tenney A E & Deepika W..."></textarea>
-    <button class="btn btn-gold" onclick="addWish()" style="align-self:flex-end">Add Your Wish ✨</button>
+    <button class="btn btn-gold" id="wish-btn" onclick="addWish()" style="align-self:flex-end;position:relative">Add Your Wish ✨<div class="sparkle-burst" id="sparkle-burst"></div></button>
+  </div>
+  <div class="wish-toast" id="wish-toast">
+    <span class="toast-icon">✨</span>
+    <p class="toast-msg">Wish Sent with Love!</p>
+    <p class="toast-sub">Your blessing has been added</p>
   </div>
 </section>
 
@@ -1430,6 +1462,30 @@ window.addWish = function() {
   // Clear form
   nameEl.value = '';
   msgEl.value = '';
+
+  // --- Success Animation ---
+  const btn = document.getElementById('wish-btn');
+  const toast = document.getElementById('wish-toast');
+
+  // Button sparkle burst
+  const burst = document.getElementById('sparkle-burst');
+  burst.innerHTML = '';
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle go';
+    const angle = (i / 12) * 360;
+    const dist = 30 + Math.random() * 25;
+    s.style.cssText = `left:50%;top:50%;--sx:${Math.cos(angle*Math.PI/180)*dist}px;--sy:${Math.sin(angle*Math.PI/180)*dist}px;animation-delay:${i*30}ms`;
+    burst.appendChild(s);
+  }
+
+  // Button flash
+  btn.classList.add('success');
+  setTimeout(() => btn.classList.remove('success'), 600);
+
+  // Toast popup
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2400);
 };
 
 // --- Fallback: render seed wishes immediately (before Firebase connects) ---
