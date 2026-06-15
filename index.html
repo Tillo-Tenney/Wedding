@@ -1302,11 +1302,7 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   <h2 class="section-title" style="color:var(--cream)">Digital Guestbook</h2>
   <div class="marquee-wrap">
     <div class="marquee-track" id="marquee">
-      <div class="love-note"><p class="note-text">"Wishing you both a lifetime of joy and laughter!"</p><p class="note-from">— Meera Aunty</p></div>
-      <div class="love-note"><p class="note-text">"May your love story be the most beautiful one ever told."</p><p class="note-from">— Rahul & Deepa</p></div>
-      <div class="love-note"><p class="note-text">"So proud of you both. Here's to forever!"</p><p class="note-from">— Uncle Suresh</p></div>
-      <div class="love-note"><p class="note-text">"You two were made for each other. Congratulations!"</p><p class="note-from">— The Sharma Family</p></div>
-      <div class="love-note"><p class="note-text">"May every day be as magical as this one."</p><p class="note-from">— College Friends</p></div>
+      <!-- Wishes rendered dynamically by JS -->
     </div>
   </div>
   <div class="guestbook-form">
@@ -1355,6 +1351,90 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   </div>
   <span id="music-label">Music</span>
 </button>
+
+<script type="module">
+// Firebase SDK (modular v9+)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ═══════════════════════════════════════════════
+// 🔧 REPLACE WITH YOUR FIREBASE CONFIG
+// ═══════════════════════════════════════════════
+const firebaseConfig = {
+    apiKey: "AIzaSyDgrZJz_KPx8jUvG91Zkyp2M3uNFEz2wYU",
+    authDomain: "guestbook-cd617.firebaseapp.com",
+    databaseURL: "https://guestbook-cd617-default-rtdb.firebaseio.com",
+    projectId: "guestbook-cd617",
+    storageBucket: "guestbook-cd617.firebasestorage.app",
+    messagingSenderId: "1011803397152",
+    appId: "1:1011803397152:web:eb27a58379d59e8de6b045",
+    measurementId: "G-VEFKLCZT8S"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const wishesRef = ref(db, 'guestbook_wishes');
+
+// Seed wishes (always shown as base content)
+const seedWishes = [
+  { name: 'Meera Aunty', msg: 'Wishing you both a lifetime of joy and laughter!' },
+  { name: 'Rahul & Deepa', msg: 'May your love story be the most beautiful one ever told.' },
+  { name: 'Uncle Suresh', msg: "So proud of you both. Here's to forever!" },
+  { name: 'The Sharma Family', msg: 'You two were made for each other. Congratulations!' },
+  { name: 'College Friends', msg: 'May every day be as magical as this one.' }
+];
+
+// --- XSS protection ---
+function escapeHTML(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// --- Render marquee dynamically ---
+function renderMarquee(wishes) {
+  const track = document.getElementById('marquee');
+  const allWishes = [...seedWishes, ...wishes];
+
+  const notesHTML = allWishes.map(w =>
+    `<div class="love-note"><p class="note-text">"${escapeHTML(w.msg)}"</p><p class="note-from">— ${escapeHTML(w.name)}</p></div>`
+  ).join('');
+
+  // Duplicate for seamless infinite marquee scroll
+  track.innerHTML = notesHTML + notesHTML;
+
+  // Reset CSS animation for smooth restart
+  track.style.animation = 'none';
+  void track.offsetWidth;
+  track.style.animation = '';
+}
+
+// --- Real-time listener: auto-updates when any visitor adds a wish ---
+onValue(wishesRef, (snapshot) => {
+  const data = snapshot.val();
+  const wishes = data ? Object.values(data) : [];
+  renderMarquee(wishes);
+});
+
+// --- Public addWish (called by onclick) ---
+window.addWish = function() {
+  const nameEl = document.getElementById('gb-name');
+  const msgEl = document.getElementById('gb-msg');
+  const name = nameEl.value.trim();
+  const msg = msgEl.value.trim();
+  if (!name || !msg) { alert('Please enter your name and message.'); return; }
+
+  // Push to Firebase (real-time sync handles re-render automatically)
+  push(wishesRef, { name, msg, ts: Date.now() });
+
+  // Clear form
+  nameEl.value = '';
+  msgEl.value = '';
+};
+
+// --- Fallback: render seed wishes immediately (before Firebase connects) ---
+renderMarquee([]);
+</script>
 
 <script>
 // PARTICLES
@@ -1421,21 +1501,7 @@ function scrollToSection(sel){
 }
 
 
-// GUESTBOOK
-function addWish(){
-  const name=document.getElementById('gb-name').value.trim();
-  const msg=document.getElementById('gb-msg').value.trim();
-  if(!name||!msg){alert('Please enter your name and message.');return}
-  const track=document.getElementById('marquee');
-  const allNotes=track.querySelectorAll('.love-note');
-  const newNote=document.createElement('div');
-  newNote.className='love-note';
-  newNote.innerHTML=`<p class="note-text">"${msg}"</p><p class="note-from">— ${name}</p>`;
-  track.insertBefore(newNote.cloneNode(true),allNotes[0]);
-  track.insertBefore(newNote,allNotes[Math.floor(allNotes.length/2)]);
-  document.getElementById('gb-name').value='';
-  document.getElementById('gb-msg').value='';
-}
+// GUESTBOOK — handled by Firebase module above
 
 // ICS
 function generateICS(){
