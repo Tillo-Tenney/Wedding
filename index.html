@@ -1122,7 +1122,7 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
     <span class="hero-name n2">Deepika W</span>
     <div class="hero-divider"></div>
     <p class="hero-date">Friday, 26th of June 2026</p>
-    <div style="margin-top:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-right:36rem">
+    <div style="margin-top:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-right:6rem">
       <button class="btn btn-outline" onclick="generateICS()">Add to Calendar</button>
     </div>
   </div>
@@ -1501,6 +1501,21 @@ window.addEventListener('scroll', () => {
     interactionTriggered = true;
   }
 }, { once: true });
+
+// Additional scroll-gesture triggers (wheel/touch) for reliable playback
+window.addEventListener('wheel', () => {
+  if (!interactionTriggered) {
+    playWithFade();
+    interactionTriggered = true;
+  }
+}, { once: true, passive: true });
+
+window.addEventListener('touchmove', () => {
+  if (!interactionTriggered) {
+    playWithFade();
+    interactionTriggered = true;
+  }
+}, { once: true, passive: true });
 
 function toggleMusic() {
   const bars = document.getElementById('music-bars');
