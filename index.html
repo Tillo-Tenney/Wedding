@@ -191,29 +191,19 @@ section{position:relative;z-index:1}
 .gallery-item:hover .gallery-overlay{opacity:1}
 .gallery-overlay span{color:var(--gold);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase}
 
-/* RSVP */
-#rsvp{background:var(--cream);padding:5rem 2rem}
-.rsvp-form{max-width:560px;margin:0 auto}
-.form-step{display:none}
-.form-step.active{display:block;animation:fadeUp .5s forwards}
-.form-group{margin-bottom:1.5rem}
-.form-group label{display:block;font-size:.7rem;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem;font-weight:500}
-.form-group input,.form-group select,.form-group textarea{
-  width:100%;padding:.9rem 1rem;background:white;border:1px solid var(--cream-mid);
-  border-radius:2px;font-family:'Montserrat',sans-serif;font-size:.85rem;color:var(--text-dark);
-  transition:border-color .3s;outline:none;
+.rose-fall{
+  position:absolute;pointer-events:none;font-size:1.2rem;
+  animation:roseDrop linear var(--rdur,8s) var(--rdel,0s) infinite;
+  opacity:0;top:-30px;
 }
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
-.form-group textarea{height:100px;resize:none}
-.rsvp-steps{display:flex;justify-content:center;gap:.75rem;margin-bottom:2rem}
-.step-dot{width:8px;height:8px;border-radius:50%;background:var(--cream-mid);transition:background .3s,width .3s}
-.step-dot.done{background:var(--gold)}
-.step-dot.active{background:var(--emerald);width:24px;border-radius:4px}
-.form-nav{display:flex;justify-content:space-between;margin-top:2rem;gap:1rem}
-.form-success{text-align:center;padding:3rem 1rem;display:none}
-.form-success.show{display:block;animation:fadeUp .6s forwards}
-.form-success h3{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--emerald);margin-bottom:.5rem}
-.form-success p{color:var(--text-mid);font-size:.85rem}
+@keyframes roseDrop{
+  0%{opacity:0;transform:translateY(-20px) rotate(0deg)}
+  8%{opacity:.7}
+  90%{opacity:.4}
+  100%{opacity:0;transform:translateY(110vh) rotate(var(--rspin,360deg))}
+}
+
+
 
 /* GUESTBOOK */
 #guestbook{background:var(--emerald-mid);padding:5rem 2rem}
@@ -237,14 +227,6 @@ section{position:relative;z-index:1}
 .guestbook-form input:focus,.guestbook-form textarea:focus{border-color:var(--gold)}
 .guestbook-form textarea{height:80px;resize:none}
 
-/* LIVESTREAM */
-#livestream{background:var(--cream-dark);padding:4rem 2rem;text-align:center}
-.live-card{max-width:500px;margin:0 auto;background:var(--emerald);border-radius:4px;padding:2.5rem;border:1px solid rgba(201,168,76,.2)}
-.live-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(220,50,50,.15);border:1px solid rgba(220,50,50,.3);color:#ff6b6b;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;padding:.4rem .9rem;border-radius:2px;margin-bottom:1.5rem}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#ff6b6b;animation:pulse-red 1.5s infinite}
-@keyframes pulse-red{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.live-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--cream);margin-bottom:.75rem}
-.live-desc{font-size:.8rem;color:rgba(253,248,240,.6);margin-bottom:1.5rem;line-height:1.7}
 
 /* FAB */
 #fab{position:fixed;bottom:2rem;right:2rem;z-index:100}
@@ -701,20 +683,6 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   100%{opacity:0;transform:translate(calc(var(--ffx)*2),calc(var(--ffy)*.5))}
 }
 
-/* ═══════════════════════════════════════════════
-   ROSE PETALS SHOWER — RSVP
-═══════════════════════════════════════════════ */
-.rose-fall{
-  position:absolute;pointer-events:none;font-size:1.2rem;
-  animation:roseDrop linear var(--rdur,8s) var(--rdel,0s) infinite;
-  opacity:0;top:-30px;
-}
-@keyframes roseDrop{
-  0%{opacity:0;transform:translateY(-20px) rotate(0deg)}
-  8%{opacity:.7}
-  90%{opacity:.4}
-  100%{opacity:0;transform:translateY(110vh) rotate(var(--rspin,360deg))}
-}
 
 /* ═══════════════════════════════════════════════
    SHIMMER BAND — HERO SWEEP
@@ -1154,8 +1122,7 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
     <span class="hero-name n2">Deepika W</span>
     <div class="hero-divider"></div>
     <p class="hero-date">Friday, 26th of June 2026</p>
-    <div style="margin-top:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-      <button class="btn btn-gold" onclick="document.getElementById('rsvp').scrollIntoView({behavior:'smooth'})">RSVP Now</button>
+    <div style="margin-top:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-right:36rem">
       <button class="btn btn-outline" onclick="generateICS()">Add to Calendar</button>
     </div>
   </div>
@@ -1328,45 +1295,6 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
 </section>
 
 
-<section id="rsvp">
-  <p class="section-label" style="text-align:center">Join Our Celebration</p>
-  <h2 class="section-title" style="text-align:center">RSVP</h2>
-  <div class="rsvp-form">
-    <div class="rsvp-steps">
-      <div class="step-dot active" id="dot-1"></div>
-      <div class="step-dot" id="dot-2"></div>
-      <div class="step-dot" id="dot-3"></div>
-    </div>
-    <div id="rsvp-success" class="form-success">
-      <div style="font-size:3rem;margin-bottom:1rem">🌸</div>
-      <h3>We're Delighted!</h3>
-      <p>Thank you for confirming your presence. We look forward to celebrating with you.</p>
-    </div>
-    <div id="step-1" class="form-step active">
-      <div class="form-group"><label>Your Full Name</label><input type="text" id="rsvp-name" placeholder="e.g. Ramesh & Sunita Kumar"></div>
-      <div class="form-group"><label>Phone Number</label><input type="tel" id="rsvp-phone" placeholder="+91 XXXXX XXXXX"></div>
-      <div class="form-group"><label>Number of Guests</label><select><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
-      <div class="form-nav"><div></div><button class="btn btn-gold" onclick="rsvpNext(2)">Continue →</button></div>
-    </div>
-    <div id="step-2" class="form-step">
-      <div class="form-group"><label>Dietary Requirements</label><select><option>No restrictions</option><option>Vegetarian</option><option>Vegan</option><option>Jain</option><option>Gluten-free</option></select></div>
-      <div class="form-group"><label>A Song That Gets You Dancing</label><input type="text" placeholder="e.g. Gallan Goodiyaan..."></div>
-      <div class="form-group"><label>Song Request for the Couple</label><input type="text" id="rsvp-song-request" placeholder="Name of a song you'd like to hear"></div>
-      <div class="form-nav">
-        <button class="btn btn-outline" onclick="rsvpBack(1)" style="border-color:var(--cream-mid);color:var(--text-mid)">← Back</button>
-        <button class="btn btn-gold" onclick="rsvpNext(3)">Continue →</button>
-      </div>
-    </div>
-    <div id="step-3" class="form-step">
-      <div class="form-group"><label>Attending In Person?</label><select><option>Yes, with joy!</option><option>Virtually attending</option><option>Unable to attend</option></select></div>
-      <div class="form-group"><label>A Message for the Couple</label><textarea placeholder="Share your warm wishes..."></textarea></div>
-      <div class="form-nav">
-        <button class="btn btn-outline" onclick="rsvpBack(2)" style="border-color:var(--cream-mid);color:var(--text-mid)">← Back</button>
-        <button class="btn btn-gold" onclick="rsvpSubmit()">Confirm RSVP ✓</button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section id="guestbook">
   <div id="lantern-container" style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden"></div>
@@ -1388,16 +1316,6 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
-<section id="livestream">
-  <p class="section-label" style="text-align:center">Can't Be There In Person?</p>
-  <h2 class="section-title" style="text-align:center">Join Virtually</h2>
-  <div class="live-card">
-    <div class="live-badge"><span class="live-dot"></span>Live on June 26</div>
-    <h3 class="live-title">Watch the Ceremony Live</h3>
-    <p class="live-desc">For our beloved family and friends who cannot travel, we will be live streaming the ceremony and celebrations. The link will be shared 24 hours before the event.</p>
-    <button class="btn btn-gold" style="width:100%;justify-content:center">Notify Me</button>
-  </div>
-</section>
 
 <div id="share-bar">
   <div class="share-inner">
@@ -1424,7 +1342,6 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   <div class="fab-menu" id="fab-menu">
     <div class="fab-item" onclick="scrollToSection('#schedule')">Schedule</div>
     <div class="fab-item" onclick="scrollToSection('#venue')">Location</div>
-    <div class="fab-item" onclick="scrollToSection('#rsvp')">RSVP</div>
   </div>
   <div class="fab-ring" onclick="toggleFab()">
     <div class="fab-pulse"></div>
@@ -1503,21 +1420,6 @@ function scrollToSection(sel){
   toggleFab();
 }
 
-// RSVP
-function rsvpNext(step){
-  document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
-  document.getElementById('step-'+step).classList.add('active');
-  document.querySelectorAll('.step-dot').forEach((d,i)=>{
-    d.classList.toggle('done',i<step-1);
-    d.classList.toggle('active',i===step-1);
-  });
-}
-function rsvpBack(step){rsvpNext(step)}
-function rsvpSubmit(){
-  document.querySelectorAll('.form-step').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.step-dot').forEach(d=>d.classList.add('done'));
-  document.getElementById('rsvp-success').classList.add('show');
-}
 
 // GUESTBOOK
 function addWish(){
@@ -1929,25 +1831,6 @@ function toggleMusic() {
   }
 })();
 
-// ═══════════════════════════════════════════════
-// RSVP SECTION: position:relative for rose shower
-// ═══════════════════════════════════════════════
-(function(){
-  const rsvp = document.getElementById('rsvp');
-  if (rsvp) rsvp.style.position = 'relative';
-  const rsvpRoses = document.createElement('div');
-  rsvpRoses.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden';
-  const rosePetals = ['🌸','💐','✿','🌷'];
-  for (let i = 0; i < 10; i++) {
-    const r = document.createElement('div');
-    r.className = 'rose-fall';
-    const spin = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 360);
-    r.style.cssText = `left:${Math.random()*100}%;--rdur:${10+Math.random()*8}s;--rdel:${Math.random()*12}s;--rspin:${spin}deg;font-size:${12+Math.random()*10}px;opacity:.35;`;
-    r.textContent = rosePetals[Math.floor(Math.random()*rosePetals.length)];
-    rsvpRoses.appendChild(r);
-  }
-  if (rsvp) rsvp.insertBefore(rsvpRoses, rsvp.firstChild);
-})();
 </script>
 </body>
 </html>
