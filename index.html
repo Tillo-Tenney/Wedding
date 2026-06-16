@@ -171,6 +171,17 @@ section{position:relative;z-index:1}
 .map-text{font-size:.75rem;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-top:.5rem}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .venue-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+/* VENUE CARDS GRID */
+.venue-cards-grid{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;max-width:1200px;margin:0 auto}
+.venue-cards-grid .venue-card{max-width:520px;flex:1;min-width:280px;margin:0}
+/* VENUE CARD LABELS */
+.venue-card-label{
+  font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:500;
+  letter-spacing:.35em;color:var(--gold);text-transform:uppercase;
+  margin-bottom:.8rem;display:block;text-align:center;
+}
+
+
 
 /* BUTTONS */
 .btn{
@@ -1319,8 +1330,24 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   </div>
   <p class="section-label">Where To Find Us</p>
   <h2 class="section-title" style="color:var(--cream)">The Venue</h2>
-  <div class="venue-card">
-    <h3 class="venue-name">Ravi Mini Hall</h3>
+  <div class="venue-cards-grid">
+    <div class="venue-card">
+      <span class="venue-card-label">✠ Ceremony</span>
+      <h3 class="venue-name">Our Lady of Lourdes Church</h3>
+      <p class="venue-address">Our Lady of Lourdes Church, Puthur, Tiruchirappalli, Tamil Nadu 620017</p>
+      <div class="map-placeholder" onclick="window.open('https://www.google.com/maps/search/Our+Lady+of+Lourdes+Church+Puthur+Tiruchirappalli','_blank')">
+        <div class="map-inner">
+          <span class="map-pin">📍</span>
+          <p class="map-text">Open in Google Maps</p>
+        </div>
+      </div>
+      <div class="venue-buttons">
+        <button class="btn btn-gold" onclick="window.open('https://www.google.com/maps/dir//Our+Lady+of+Lourdes+Church+Puthur+Tiruchirappalli','_blank')">Get Directions</button>
+      </div>
+    </div>
+    <div class="venue-card">
+      <span class="venue-card-label">✦ Reception</span>
+      <h3 class="venue-name">Ravi Mini Hall</h3>
     <p class="venue-address">24, Karur Bypass Road ,Opp maya residency, next to Kalaingar Arivalayam, Tiruchirappalli, Tamil Nadu 620002</p>
     <div class="map-placeholder" onclick="window.open('https://www.google.com/maps?sca_esv=879950088f824d1a&rlz=1C1YTUH_enIN981IN981&sxsrf=ANbL-n5f6COVQdIBPUbjS_6XsgAI46vIZg:1774943399697&biw=1163&bih=508&gs_lp=Egxnd3Mtd2l6LXNlcnAiCVJhdmkgbWluaSoCCAAyCxAuGK8BGMcBGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAESJ4fUABYxg9wAHgBkAEAmAHGAaABwwuqAQMwLjm4AQPIAQD4AQGYAgmgAu0LwgILEC4YgAQYxwEY0QPCAgoQABiABBiKBRhDwgIOEC4YgAQYxwEYrwEYjgXCAg4QABiABBiKBRixAxiDAcICEBAuGIAEGIoFGEMYsQMYgwHCAgoQLhiABBiKBRhDwgIOEC4YgAQYsQMYxwEY0QPCAhAQLhhDGIMBGLEDGIAEGIoFwgINEC4YgAQYigUYQxixA8ICCxAuGIAEGMcBGK8BwgIIEC4YgAQYsQPCAgUQLhiABJgDAJIHBTAuOC4xoAf39AGyBwUwLjguMbgH7QvCBwUwLjMuNsgHH4AIAQ&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KX3cEIW79ao7MYC2S_0qkZTx&daddr=24,+Karur+Bypass+Road+,Opp+maya+residency,+next+to+Kalaingar+Arivalayam,+Tiruchirappalli,+Tamil+Nadu+620002','_blank')">
       <div class="map-inner">
@@ -1332,6 +1359,7 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
       <button class="btn btn-gold" onclick="window.open('https://www.google.com/maps?sca_esv=879950088f824d1a&rlz=1C1YTUH_enIN981IN981&sxsrf=ANbL-n5f6COVQdIBPUbjS_6XsgAI46vIZg:1774943399697&biw=1163&bih=508&gs_lp=Egxnd3Mtd2l6LXNlcnAiCVJhdmkgbWluaSoCCAAyCxAuGK8BGMcBGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAESJ4fUABYxg9wAHgBkAEAmAHGAaABwwuqAQMwLjm4AQPIAQD4AQGYAgmgAu0LwgILEC4YgAQYxwEY0QPCAgoQABiABBiKBRhDwgIOEC4YgAQYxwEYrwEYjgXCAg4QABiABBiKBRixAxiDAcICEBAuGIAEGIoFGEMYsQMYgwHCAgoQLhiABBiKBRhDwgIOEC4YgAQYsQMYxwEY0QPCAhAQLhhDGIMBGLEDGIAEGIoFwgINEC4YgAQYigUYQxixA8ICCxAuGIAEGMcBGK8BwgIIEC4YgAQYsQPCAgUQLhiABJgDAJIHBTAuOC4xoAf39AGyBwUwLjguMbgH7QvCBwUwLjMuNsgHH4AIAQ&um=1&ie=UTF-8&fb=1&gl=in&sa=X&geocode=KX3cEIW79ao7MYC2S_0qkZTx&daddr=24,+Karur+Bypass+Road+,Opp+maya+residency,+next+to+Kalaingar+Arivalayam,+Tiruchirappalli,+Tamil+Nadu+620002','_blank')">Get Directions</button>
       <button class="btn btn-outline" onclick="generateICS()">Add to Calendar</button>
     </div>
+  </div>
   </div>
 </section>
 
@@ -1438,10 +1466,10 @@ const wishesRef = ref(db, 'guestbook_wishes');
 
 // Seed wishes (always shown as base content)
 const seedWishes = [
-  { name: 'Meera Aunty', msg: 'Wishing you both a lifetime of joy and laughter!' },
-  { name: 'Rahul & Deepa', msg: 'May your love story be the most beautiful one ever told.' },
-  { name: 'Uncle Suresh', msg: "So proud of you both. Here's to forever!" },
-  { name: 'The Sharma Family', msg: 'You two were made for each other. Congratulations!' },
+  { name: 'Logesh', msg: 'Wishing you both a lifetime of joy and laughter!' },
+  { name: 'Deepa', msg: 'May your love story be the most beautiful one ever told.' },
+  { name: 'Rahul', msg: "So proud of you both. Here's to forever!" },
+  { name: 'Saravanan', msg: 'You two were made for each other. Congratulations!' },
   { name: 'College Friends', msg: 'May every day be as magical as this one.' }
 ];
 
