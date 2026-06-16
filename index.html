@@ -1415,7 +1415,7 @@ import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gs
 // 🔧 REPLACE WITH YOUR FIREBASE CONFIG
 // ═══════════════════════════════════════════════
 const firebaseConfig = {
-	apiKey: "AIzaSyDgrZJz_KPx8jUvG91Zkyp2M3uNFEz2wYU",
+    apiKey: "AIzaSyDgrZJz_KPx8jUvG91Zkyp2M3uNFEz2wYU",
     authDomain: "guestbook-cd617.firebaseapp.com",
     databaseURL: "https://guestbook-cd617-default-rtdb.firebaseio.com",
     projectId: "guestbook-cd617",
@@ -1668,6 +1668,24 @@ function toggleMusic() {
   }
 }
 
+
+// ═══════════════════════════════════════════════
+// MOBILE SCROLL GUARD — Prevent scroll from triggering music on touch
+// ═══════════════════════════════════════════════
+(function(){
+  var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (!isTouchDevice) return;
+
+  // On touch devices, intercept scroll in CAPTURE phase (fires before the existing bubble listener)
+  // This sets the flag so the existing {once:true} scroll handler sees it and does nothing
+  window.addEventListener('scroll', function() {
+    interactionTriggered = true;
+    // Reset after this event cycle so tap/click can still trigger music later
+    requestAnimationFrame(function() {
+      if (!isSongPlaying) interactionTriggered = false;
+    });
+  }, { capture: true, once: true });
+})();
 // ═══════════════════════════════════════════════
 // GRAND CINEMATIC OPENING
 // ═══════════════════════════════════════════════
