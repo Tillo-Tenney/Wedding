@@ -1442,6 +1442,14 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
   </div>
 </section>
 
+<!-- Gallery Lightbox -->
+<div class="gallery-lightbox" id="gallery-lightbox">
+  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
+  <div class="lightbox-nav lightbox-prev" onclick="lightboxPrev()">&#10094;</div>
+  <img id="lightbox-img" src="" alt="Full view">
+  <div class="lightbox-nav lightbox-next" onclick="lightboxNext()">&#10095;</div>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
 
 
 <section id="guestbook">
@@ -2212,13 +2220,5 @@ function closeLightbox() {
 
 </script>
 
-<!-- Gallery Lightbox -->
-<div class="gallery-lightbox" id="gallery-lightbox">
-  <div class="lightbox-close" onclick="closeLightbox()">✕</div>
-  <div class="lightbox-nav lightbox-prev" onclick="lightboxPrev()">&#10094;</div>
-  <img id="lightbox-img" src="" alt="Full view">
-  <div class="lightbox-nav lightbox-next" onclick="lightboxNext()">&#10095;</div>
-  <div class="lightbox-counter" id="lightbox-counter"></div>
-</div>
 </body>
 </html>
