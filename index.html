@@ -221,20 +221,13 @@ section{position:relative;z-index:1}
   overflow:hidden;
   height:100%;
 }
-/* GALLERY IMAGES — precise portrait fit */
-.gallery-placeholder{
-  position:relative;
-  overflow:hidden;
-  height:100%;
-  background:#f5f2eb;
-}
-
 .gallery-placeholder img{
-  width:100%;
-  height:100%;
-  object-fit:contain;      /* preserve full image */
-  object-position:center;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center center;
   display:block;
+  position:absolute;
+  inset:0;
 }
 .gallery-item{display:flex;flex-direction:column}
 .g-tall .gallery-placeholder{min-height:0;aspect-ratio:3/4}
@@ -2235,6 +2228,72 @@ function closeLightbox() {
   document.body.style.overflow = '';
 }
 
+</script>
+
+
+<audio id="bgMusic" loop preload="auto" playsinline>
+  <source src="assets/Partha-Muthal.mp3" type="audio/mpeg">
+</audio>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const music = document.getElementById('bgMusic');
+  const musicBtn = document.getElementById('music-btn');
+  if (!music || !musicBtn) return;
+
+  let started = false;
+
+  async function startMusic() {
+    if (started) return;
+    try {
+      await music.play();
+      started = true;
+      musicBtn.classList.add('playing');
+      localStorage.setItem('musicEnabled', 'true');
+    } catch (e) {}
+  }
+
+  document.addEventListener('click', startMusic, { once: true });
+
+  musicBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+
+    if (music.paused) {
+      try {
+        await music.play();
+        musicBtn.classList.add('playing');
+        localStorage.setItem('musicEnabled', 'true');
+      } catch (err) {}
+    } else {
+      music.pause();
+      musicBtn.classList.remove('playing');
+      localStorage.setItem('musicEnabled', 'false');
+    }
+  });
+
+  if (localStorage.getItem('musicEnabled') === 'true') {
+    document.addEventListener('click', async () => {
+      try {
+        await music.play();
+        musicBtn.classList.add('playing');
+      } catch (err) {}
+    }, { once: true });
+  }
+
+  const stage = document.getElementById('grand-stage');
+  if (stage) {
+    const observer = new MutationObserver(async () => {
+      if (stage.classList.contains('stage-done')) {
+        try {
+          await music.play();
+          musicBtn.classList.add('playing');
+        } catch (err) {}
+      }
+    });
+    observer.observe(stage, { attributes: true, attributeFilter: ['class'] });
+  }
+});
 </script>
 
 </body>
