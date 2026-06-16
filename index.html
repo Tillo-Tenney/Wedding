@@ -1064,6 +1064,7 @@ footer{background:var(--emerald);padding:3rem 2rem;text-align:center}
     <span class="cw-title" style="position:relative;overflow:hidden">Tillo Tenney &amp; Deepika</span>
     <div class="cw-divider"></div>
     <span class="cw-date">26 · June · 2026 &nbsp;·&nbsp; Trichy, Tamilnadu</span>
+    <p id="cx-tap-hint" style="margin-top:1.2rem;font-family:'Montserrat',sans-serif;font-size:.6rem;letter-spacing:.35em;color:rgba(201,168,76,.7);text-transform:uppercase;animation:fadeIn 1.5s 1s both,fabPulse 2s 2s infinite">Tap to Open</p>
   </div>
 
   <!-- Red carpet (rolls out after curtain opens) -->
@@ -1851,49 +1852,55 @@ function toggleMusic() {
     }
   }
 
-  // ── SEQUENCE ──────────────────────────────────
-  // 0.0s  Stage is black, welcome text fades in gently (already visible via CSS)
-  // 1.4s  Welcome text starts fading out (handled by transition on .hide class)
-  // 2.0s  Curtains begin sliding open, centre spotlight fades in
-  // 2.2s  Petals rain down as curtains part
-  // 2.6s  Red carpet rolls out from centre bottom
-  // 4.4s  Stage fades away completely
+  // ── CLICK-TRIGGERED SEQUENCE ──────────────────
+  // User clicks/taps the stage → curtain opens + music starts
 
-  // Step 1 — hide welcome text before curtains open
-  setTimeout(() => {
+  function openCurtain() {
+    // Trigger music on this user gesture
+    if (!interactionTriggered) {
+      playWithFade();
+      interactionTriggered = true;
+    }
+
+    // 0.0s — hide welcome text, activate spotlight
     welcome && welcome.classList.add('hide');
-    spotC    && spotC.classList.add('spots-open');
-  }, 1400);
+    spotC   && spotC.classList.add('spots-open');
 
-  // Step 2 — open curtains
-  setTimeout(() => {
-    if (cxLeft)  cxLeft.closest('#curtain-wrap') && cxLeft.style.transform === '' && true;
-    // Apply open class to both panels directly
-    cxLeft  && (cxLeft.style.transform  = 'translateX(-88%) scaleX(0.40)');
-    cxRight && (cxRight.style.transform = 'translateX(88%)  scaleX(0.40)');
-    cxLeft  && (cxLeft.style.transition  = 'transform 2.2s cubic-bezier(.6,0,.15,1)');
-    cxRight && (cxRight.style.transition = 'transform 2.2s cubic-bezier(.6,0,.15,1)');
-  }, 2000);
+    // 0.6s — open curtains
+    setTimeout(() => {
+      cxLeft  && (cxLeft.style.transform  = 'translateX(-88%) scaleX(0.40)');
+      cxRight && (cxRight.style.transform = 'translateX(88%)  scaleX(0.40)');
+      cxLeft  && (cxLeft.style.transition  = 'transform 2.2s cubic-bezier(.6,0,.15,1)');
+      cxRight && (cxRight.style.transition = 'transform 2.2s cubic-bezier(.6,0,.15,1)');
+    }, 600);
 
-  // Step 3 — petals cascade
-  setTimeout(() => spawnPetals(40, 0), 2200);
+    // 0.8s — petals cascade
+    setTimeout(() => spawnPetals(40, 0), 800);
 
-  // Step 4 — red carpet unrolls
-  setTimeout(() => {
-    carpet && carpet.classList.add('carpet-roll');
-  }, 2600);
+    // 1.2s — red carpet unrolls
+    setTimeout(() => {
+      carpet && carpet.classList.add('carpet-roll');
+    }, 1200);
 
-  // Step 5 — fade out entire stage
-  setTimeout(() => {
-    stage.style.transition = 'opacity 0.7s ease';
-    stage.style.opacity = '0';
-  }, 4600);
+    // 3.2s — fade out entire stage
+    setTimeout(() => {
+      stage.style.transition = 'opacity 0.7s ease';
+      stage.style.opacity = '0';
+    }, 3200);
 
-  // Step 6 — remove from DOM, restore scroll
-  setTimeout(() => {
-    stage.style.display = 'none';
-    document.body.style.overflow = '';
-  }, 5400);
+    // 4.0s — remove from DOM, restore scroll
+    setTimeout(() => {
+      stage.style.display = 'none';
+      document.body.style.overflow = '';
+    }, 4000);
+  }
+
+  // Wait for click/tap on the stage
+  stage.addEventListener('click', openCurtain, { once: true });
+  stage.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    openCurtain();
+  }, { once: true });
 })();
 
 // ═══════════════════════════════════════════════
